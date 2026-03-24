@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- IMPORTANT: Mobile responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShakeME</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Libraries FIRST -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+    <!-- Your JS LAST (with defer) -->
+    <script src="app.js" defer></script>
+    <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">ShakeME</div>
+            <div class="tagline">Premium Networking</div>
+        </div>
+
+        <!-- HOME -->
+        <div id="home" class="screen active">
+            <div class="instruction" style="margin-top:20px;">
+                Choose how you want to share your contact
+            </div>
+
+            <div class="mode-grid">
+                <div class="mode-btn shake" onclick="startMode('shake')">
+                    <span class="mode-icon">🤝</span>
+                    <span class="mode-label">Shake Me</span>
+                    <span class="mode-desc">Quick share<br>Name & Phone</span>
+                </div>
+
+                <div class="mode-btn hug" onclick="startMode('hug')">
+                    <span class="mode-icon">🫂</span>
+                    <span class="mode-label">Hug Me</span>
+                    <span class="mode-desc">Full profile<br>LinkedIn + Bio</span>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-dark" onclick="editProfile()">Edit My Profile</button>
+                <button class="btn btn-primary" onclick="installApp()">Install App</button>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div id="form" class="screen">
+            <div class="glass-card">
+
+                <div class="form-group">
+                    <label class="required">Full Name</label>
+                    <input type="text" id="name" placeholder="John Smith">
+                </div>
+
+                <div class="form-group">
+                    <label class="required">WhatsApp Number</label>
+
+                    <div class="phone-row">
+                        <select id="countryCode">
+                            <option value="+234">+234 🇳🇬</option>
+                            <option value="+1">+1 🇺🇸</option>
+                            <option value="+44">+44 🇬🇧</option>
+                        </select>
+
+                        <input type="tel" id="phone" placeholder="8012345678">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Role</label>
+                    <input type="text" id="role" placeholder="Product Designer">
+                </div>
+
+                <!-- HUG ONLY -->
+                <div id="hugFields" class="hidden">
+
+                    <div class="form-group">
+                        <label>LinkedIn</label>
+                        <input type="url" id="linkedin">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status">
+                            <option value="">Select...</option>
+                            <option>Open to Work</option>
+                            <option>Hiring</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>About (max 50 chars)</label>
+                        <textarea id="about" maxlength="50"></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="generateQR()">Generate QR</button>
+                <button class="btn btn-dark" onclick="goHome()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- QR SCREEN -->
+        <div id="qrScreen" class="screen">
+            <div class="qr-container">
+
+                <div class="premium-card">
+
+                    <div class="card-header">
+                        <div id="displayName"></div>
+                        <div id="displayRole"></div>
+                    </div>
+
+                    <div class="qr-wrapper">
+                        <div id="qrcode"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-dark" onclick="goHome()">Done</button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+/* VARIABLES */
+:root {
+    --gold: #D4AF37;
+    --bg-color: #0b0b0b;
+    --text-color: #ffffff;
+    --text-light: rgba(255, 255, 255, 0.7);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+}
+
+/* 🔥 MAIN CONTAINER (VERY IMPORTANT FIX) */
+.container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+}
+
+.tagline {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* MODES */
+.mode-grid {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    flex: 1;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+    border-color: var(--gold);
+}
+
+.mode-label {
+    display: block;
+    margin-top: 6px;
+    font-weight: 600;
+    color: var(--gold);
+}
+
+.mode-desc {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* BUTTONS */
+.btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--gold);
+    color: #000;
+}
+
+.btn-dark {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+}
+
+/* FORM */
+.form-group {
+    margin-bottom: 12px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 5px;
+    background: #111;
+    color: #fff;
+}
+
+/* PHONE ROW */
+.phone-row {
+    display: flex;
+    gap: 8px;
+}
+
+.phone-row select {
+    width: 30%;
+}
+
+.phone-row input {
+    width: 70%;
+}
+
+/* GLASS CARD */
+.glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 15px;
+}
+
+/* 🔥 PREMIUM CARD FIX */
+.premium-card {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    background: linear-gradient(135deg,#000,#111);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(212,175,55,0.25);
+}
+
+/* QR FIX (CRITICAL) */
+#qrcode {
+    background: #fff !important;
+    padding: 10px;
+    margin: 15px auto;
+    width: fit-content;
+}
+
+/* FORCE QR SIZE */
+#qrcode canvas {
+    width: 220px !important;
+    height: 220px !important;
+}
+
+/* TEXT */
+.card-name {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 18px;
+}
+
+.card-role {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.qr-label {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+/* SCREEN CONTROL */
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 500px) {
+    .mode-grid {
+        flex-direction: column;
+    }
+}
+
+/* ===== PREMIUM BACKGROUND ===== */
+body {
+    background: radial-gradient(circle at top, #1a1a1a, #0b0b0b);
+    color: #fff;
+}
+
+/* Glow effect */
+.bg-glow {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(212,175,55,0.2), transparent);
+    top: -50px;
+    left: -50px;
+    filter: blur(80px);
+    z-index: 0;
+}
+
+/* ===== GLASS CARDS ===== */
+.glass-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px;
+}
+
+/* ===== PREMIUM CARD ===== */
+.premium-card {
+    background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
+    border-radius: 24px;
+    padding: 20px;
+    border: 1px solid rgba(212,175,55,0.4);
+    box-shadow: 
+        0 10px 30px rgba(0,0,0,0.6),
+        inset 0 0 20px rgba(255,255,255,0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle shine */
+.card-shine {
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.08), transparent);
+    transform: rotate(25deg);
+}
+
+/* ===== QR ===== */
+#qrcode canvas {
+    border-radius: 12px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    border-radius: 14px;
+    padding: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #D4AF37, #FFD700);
+    color: #000;
+}
+
+.btn-primary:hover {
+    transform: scale(1.03);
+}
+
+/* ===== INPUTS ===== */
+input, select, textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ===== SCREEN TRANSITION ===== */
+.screen {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px);}
+    to { opacity: 1; transform: translateY(0);}
+}
