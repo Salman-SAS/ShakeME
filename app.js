@@ -3,6 +3,7 @@
 // =======================
 let currentMode = "shake";
 let currentData = {};
+let deferredPrompt;
 
 // =======================
 // SCREEN SWITCH
@@ -13,31 +14,43 @@ function show(id){
 }
 
 // =======================
-// MODE SELECT (FIXED)
+// MODE SELECT
 // =======================
 function startMode(mode){
     currentMode = mode;
-
     document.getElementById("hugFields").style.display =
         (mode === "hug") ? "block" : "none";
-
     show("form");
 }
 
 // =======================
-// GENERATE QR (FIXED)
+// VALIDATION
+// =======================
+function validateFields(fields){
+    let valid = true;
+    fields.forEach(f => {
+        let el = document.getElementById(f);
+        if(!el.value.trim()){
+            el.classList.add("error");
+            valid = false;
+        } else {
+            el.classList.remove("error");
+        }
+    });
+    return valid;
+}
+
+// =======================
+// GENERATE QR
 // =======================
 function generateQR(){
+
+    if(!validateFields(["name","phone","role"])) return;
 
     let name = document.getElementById("name").value.trim();
     let phone = document.getElementById("phone").value.trim();
     let code = document.getElementById("countryCode").value;
     let role = document.getElementById("role").value.trim();
-
-    if(!name || !phone || !role){
-        alert("Name, Phone and Role are required");
-        return;
-    }
 
     let fullPhone = code + phone;
 
@@ -48,11 +61,10 @@ function generateQR(){
         role: role
     };
 
-    // ONLY FOR HUG
     if(currentMode === "hug"){
         data.status = document.getElementById("status").value;
-        data.linkedin = document.getElementById("linkedin").value;
-        data.about = document.getElementById("about").value;
+        data.linkedin = document.getElementById("linkedin").value.trim();
+        data.about = document.getElementById("about").value.trim();
     }
 
     currentData = data;
@@ -64,7 +76,6 @@ function generateQR(){
 
     // GENERATE QR
     document.getElementById("qrcode").innerHTML = "";
-
     new QRCode(document.getElementById("qrcode"), {
         text: url,
         width: 220,
@@ -81,29 +92,23 @@ function generateQR(){
 }
 
 // =======================
-// LOAD FROM QR
+// COPY QR LINK
 // =======================
-window.onload = ()=>{
-    let params = new URLSearchParams(window.location.search);
-    let dataParam = params.get("data");
+function copyQRLink(){
+    if(!currentData || !currentData.name) return;
 
-    if(dataParam){
-        try{
-            let parsed = JSON.parse(decodeURIComponent(dataParam));
-            currentData = parsed;
-            displayResult(parsed);
-            show("profileScreen");
-        }catch(e){
-            console.log("Invalid QR");
-        }
-    }
-};
+    let encoded = encodeURIComponent(JSON.stringify(currentData));
+    let url = window.location.origin + window.location.pathname + "?data=" + encoded;
+
+    navigator.clipboard.writeText(url).then(()=>{
+        alert("QR Link copied to clipboard!");
+    });
+}
 
 // =======================
-// DISPLAY RESULT (SAFE)
+// DISPLAY PROFILE CARD
 // =======================
 function displayResult(p){
-
     document.getElementById("viewName").innerText = p.name || "";
     document.getElementById("viewRole").innerText = p.role || "";
 
@@ -113,16 +118,22 @@ function displayResult(p){
     if(p.linkedin){
         document.getElementById("linkedinBtn").classList.remove("hidden");
         document.getElementById("linkedinBtn").href = p.linkedin;
+    } else {
+        document.getElementById("linkedinBtn").classList.add("hidden");
     }
 
     if(p.about){
         document.getElementById("viewAboutSection").classList.remove("hidden");
         document.getElementById("viewAbout").innerText = p.about;
+    } else {
+        document.getElementById("viewAboutSection").classList.add("hidden");
     }
 
     if(p.status){
         document.getElementById("viewStatus").classList.remove("hidden");
         document.getElementById("viewStatus").innerText = p.status;
+    } else {
+        document.getElementById("viewStatus").classList.add("hidden");
     }
 }
 
@@ -130,6 +141,8 @@ function displayResult(p){
 // SAVE CONTACT
 // =======================
 function saveContact(){
+    if(!currentData || !currentData.name) return;
+
     let vcf = `BEGIN:VCARD
 VERSION:3.0
 FN:${currentData.name}
@@ -147,23 +160,79 @@ END:VCARD`;
 // NAVIGATION
 // =======================
 function goHome(){
-    window.location.href = window.location.pathname;
+    show("home");
 }
 
-let deferredPrompt;
+// =======================
+// PREFILL FORM FROM LOCALSTORAGE
+// =======================
+(function prefillForm(){
+    let lastProfile = localStorage.getItem("profile");
+    if(lastProfile){
+        let p = JSON.parse(lastProfile);
+        document.getElementById("name").value = p.name || "";
+        document.getElementById("phone").value = p.phone ? p.phone.slice(-10) : "";
+        document.getElementById("role").value = p.role || "";
+        if(p.linkedin) document.getElementById("linkedin").value = p.linkedin;
+        if(p.status) document.getElementById("status").value = p.status;
+        if(p.about) document.getElementById("about").value = p.about;
 
+        if(p.type === "hug"){
+            currentMode = "hug";
+            document.getElementById("hugFields").style.display = "block";
+        }
+    }
+})();
+
+// =======================
+// LOAD QR DATA IF SCANNED
+// =======================
+window.onload = ()=>{
+    let params = new URLSearchParams(window.location.search);
+    let dataParam = params.get("data");
+
+    if(dataParam){
+        try{
+            let parsed = JSON.parse(decodeURIComponent(dataParam));
+            currentData = parsed;
+            displayResult(parsed);
+            show("profileScreen"); // scanned QR → show contact card
+            return;
+        }catch(e){
+            console.log("Invalid QR data");
+        }
+    }
+
+    show("home"); // otherwise start at home screen
+};
+
+// =======================
+// TOAST MESSAGE
+// =======================
+function showConnectedToast(mode){
+    let toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = `Connected via ${mode === 'shake' ? 'Shake' : 'Hug'}!`;
+    document.body.appendChild(toast);
+
+    setTimeout(() => { toast.style.opacity = 1; toast.style.top = '40px'; }, 50);
+    setTimeout(() => { toast.style.opacity = 0; toast.style.top = '0px'; }, 2000);
+    setTimeout(() => { document.body.removeChild(toast); }, 2500);
+}
+
+// =======================
+// PWA INSTALL PROMPT
+// =======================
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
+    e.preventDefault();
+    deferredPrompt = e;
 });
 
 function installApp(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => {
-      deferredPrompt = null;
-    });
-  } else {
-    alert("Use 'Add to Home Screen' from your browser menu");
-  }
+    if(deferredPrompt){
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+    } else {
+        alert("Use 'Add to Home Screen' from your browser menu");
+    }
 }
