@@ -1,14 +1,14 @@
-/* VARIABLES */
+/* ===================== VARIABLES ===================== */
 :root {
     --gold: #D4AF37;
     --bg-color: #0b0b0b;
     --text-color: #ffffff;
     --text-light: rgba(255, 255, 255, 0.7);
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-bg: rgba(255,255,255,0.05);
+    --glass-border: rgba(255,255,255,0.15);
 }
 
-/* RESET */
+/* ===================== RESET ===================== */
 * {
     margin: 0;
     padding: 0;
@@ -17,37 +17,63 @@
 }
 
 body {
-    background: var(--bg-color);
-    color: var(--text-color);
+    background: radial-gradient(circle at top, #1a1a1a, #0b0b0b);
     display: flex;
     justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text-color);
 }
 
-/* 🔥 MAIN CONTAINER (VERY IMPORTANT FIX) */
+/* ===================== IPHONE FRAME ===================== */
+.iphone-frame {
+    width: 375px;
+    height: 812px;
+    border-radius: 40px;
+    background: #000;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    overflow: hidden;
+    border: 2px solid #222;
+    position: relative;
+}
+
+/* STATUS BAR */
+.status-bar {
+    height: 30px;
+    padding: 0 12px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    background: #000;
+}
+
+/* CONTAINER */
 .container {
-    width: 100%;
-    max-width: 420px;
-    padding: 20px;
+    padding: 16px;
+    height: calc(100% - 30px);
+    overflow-y: auto;
 }
 
 /* HEADER */
 .header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .logo {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--gold);
 }
 
 .tagline {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-light);
 }
 
-/* MODES */
+/* MODE BUTTONS */
 .mode-grid {
     display: flex;
     gap: 10px;
@@ -56,50 +82,40 @@ body {
 
 .mode-btn {
     flex: 1;
+    padding: 18px;
+    border-radius: 16px;
+    text-align: center;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    padding: 16px;
-    text-align: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: 0.2s;
 }
 
 .mode-btn:hover {
     border-color: var(--gold);
-}
-
-.mode-label {
-    display: block;
-    margin-top: 6px;
-    font-weight: 600;
-    color: var(--gold);
-}
-
-.mode-desc {
-    font-size: 0.75rem;
-    color: var(--text-light);
+    transform: scale(1.02);
 }
 
 /* BUTTONS */
 .btn {
-    width: 100%;
-    margin-top: 10px;
-    padding: 12px;
-    border-radius: 12px;
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
     font-weight: 600;
+    border: none;
     cursor: pointer;
+    text-align: center;
 }
 
 .btn-primary {
-    background: var(--gold);
+    background: linear-gradient(135deg, #D4AF37, #FFD700);
     color: #000;
 }
 
 .btn-dark {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: var(--text-color);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
 }
 
 /* FORM */
@@ -111,13 +127,12 @@ input, select, textarea {
     width: 100%;
     padding: 12px;
     border-radius: 10px;
-    border: none;
     margin-top: 5px;
-    background: #111;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
     color: #fff;
 }
 
-/* PHONE ROW */
 .phone-row {
     display: flex;
     gap: 8px;
@@ -133,79 +148,72 @@ input, select, textarea {
 
 /* GLASS CARD */
 .glass-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px;
 }
 
-/* 🔥 PREMIUM CARD FIX */
+/* PREMIUM CARD */
 .premium-card {
     width: 100%;
-    max-width: 340px;
+    max-width: 320px;
     margin: 0 auto;
-    background: linear-gradient(135deg,#000,#111);
-    border: 1px solid var(--gold);
-    border-radius: 20px;
-    padding: 20px;
+    padding: 18px;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
+    border: 1px solid rgba(212,175,55,0.4);
     text-align: center;
-    box-shadow: 0 0 25px rgba(212,175,55,0.25);
 }
 
-/* QR FIX (CRITICAL) */
+/* QR FIX */
 #qrcode {
-    background: #fff !important;
+    background: #fff;
     padding: 10px;
     margin: 15px auto;
+    border-radius: 12px;
     width: fit-content;
 }
 
-/* FORCE QR SIZE */
 #qrcode canvas {
-    width: 220px !important;
-    height: 220px !important;
+    width: 200px !important;
+    height: 200px !important;
 }
 
 /* TEXT */
-.card-name {
-    font-weight: 700;
-    color: var(--gold);
-    font-size: 18px;
-}
-
-.card-role {
+.qr-text {
+    font-size: 12px;
     color: var(--text-light);
-    font-size: 14px;
 }
 
-.qr-label {
+/* PROFILE */
+#profileScreen h2 {
     color: var(--gold);
-    font-weight: 600;
 }
 
-/* SCREEN CONTROL */
+/* HIDDEN */
+.hidden {
+    display: none;
+}
+
+/* SCREENS */
 .screen {
     display: none;
+    animation: fadeIn 0.3s ease;
 }
 
 .screen.active {
     display: block;
 }
 
-/* RESPONSIVE */
-@media screen and (max-width: 500px) {
-    .mode-grid {
-        flex-direction: column;
-    }
+/* ANIMATION */
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(10px);}
+    to {opacity:1; transform:translateY(0);}
 }
 
-/* ===== PREMIUM BACKGROUND ===== */
-body {
-    background: radial-gradient(circle at top, #1a1a1a, #0b0b0b);
-    color: #fff;
-}
-
-/* Glow effect */
+/* GLOW */
 .bg-glow {
     position: fixed;
     width: 300px;
@@ -214,81 +222,35 @@ body {
     top: -50px;
     left: -50px;
     filter: blur(80px);
-    z-index: 0;
+    z-index: -1;
 }
 
-/* ===== GLASS CARDS ===== */
-.glass-card {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 16px;
+/* PROFILE BUTTONS ROW */
+.profile-btns {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* ===== PREMIUM CARD ===== */
-.premium-card {
-    background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
-    border-radius: 24px;
-    padding: 20px;
-    border: 1px solid rgba(212,175,55,0.4);
-    box-shadow: 
-        0 10px 30px rgba(0,0,0,0.6),
-        inset 0 0 20px rgba(255,255,255,0.03);
-    position: relative;
-    overflow: hidden;
+/* ERROR FIELD */
+input.error, select.error, textarea.error {
+    border-color: #ff4d4f;
 }
 
-/* subtle shine */
-.card-shine {
-    position: absolute;
-    top: 0;
-    left: -50%;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.08), transparent);
-    transform: rotate(25deg);
-}
-
-/* ===== QR ===== */
-#qrcode canvas {
-    border-radius: 12px;
-}
-
-/* ===== BUTTONS ===== */
-.btn {
-    border-radius: 14px;
-    padding: 14px;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #D4AF37, #FFD700);
+/* CONNECTED TOAST */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
     color: #000;
-}
-
-.btn-primary:hover {
-    transform: scale(1.03);
-}
-
-/* ===== INPUTS ===== */
-input, select, textarea {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-/* ===== SCREEN TRANSITION ===== */
-.screen {
-    display: none;
-    animation: fadeIn 0.4s ease;
-}
-
-.screen.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px);}
-    to { opacity: 1; transform: translateY(0);}
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-weight: bold;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s, top 0.3s;
 }
